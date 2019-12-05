@@ -1,0 +1,21 @@
+#!/bin/bash
+#
+# setmeta2flac [artist] [album] [albumartist] [picture]
+#
+
+metaflac --remove-all-tags *.flac # 消去
+metaflac --preserve-modtime --set-tag=ARTIST="${1}" --set-tag=ALBUM="${2}" \
+	 --set-tag=ALBUMARTIST="${3}" --set-tag="ALBUM ARTIST"="${3}" \
+	 --import-picture-from="3||||$4" *.flac
+
+count=1
+for file in *flac; do
+    echo -e "${file}"
+    base=$(basename "${file}" .flac) # | awk -F'[_]' '{print $3}')
+    # spaceを含む文字列は""で囲む
+    #echo -e "${base}"
+    metaflac --preserve-modtime --set-tag=TITLE="${base}" \
+	     --set-tag=TRACKNUMBER="${count}" "${file}"
+    (( count++ ))
+    echo -e "=============================================="
+done

@@ -1,0 +1,6 @@
+#!/bin/bash
+
+# 変換したいfileがあるディレクトリ内でwav2flac
+
+find *wav -exec sox {} {}.flac \;
+rename s/.wav.flac/.flac/g *.wav.flac
